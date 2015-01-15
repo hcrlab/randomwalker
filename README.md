@@ -4,16 +4,16 @@ Tutorial code on ROS basics: publishers, subscribers, and services.
 ## Introduction
 randomwalker is a small, toy robot simulator to practice implementing ROS publishers, subscribers, and services. There are four components to randomwalker.
 
-The *world* is a 2D grid. Each location on the grid has a *score* associated with it, ranging from -10 to 10. As your robot visits each location, it adds the location's score to its total score. Try to race around and get a high score!
+The **world** is a 2D grid. Each location on the grid has a **score** associated with it, ranging from -10 to 10. As your robot visits each location, it adds the location's score to its total score. Try to race around and get a high score!
 
-The world is already implemented for you. Instead, you will implement the *map server*, which provides two services:
+The world is already implemented for you. Instead, you will implement the **map server**, which provides two services:
 
 1. `get_bounds`: When called, returns the number of rows and columns in the world.
 2. `get_score`: Given a row and column number, returns the score of that location in the world.
 
-The *robot* can't see the scores of any location until it travels there. It listens for movement commands on the `move_command` topic. As it moves to each location, it asks the map server what the score is for that location, and adds the score to its total. It also prints that out to the terminal.
+The **robot** can't see the scores of any location until it travels there. It listens for movement commands on the `move_command` topic. As it moves to each location, it asks the map server what the score is for that location, and adds the score to its total. It also prints that out to the terminal.
 
-The *teleop* allows you to send movement commands to the robot over the `move_command` topic.
+The **teleop** allows you to send movement commands to the robot over the `move_command` topic.
 
 ## How to write a publisher, subscriber, and service
 
