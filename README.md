@@ -15,13 +15,13 @@ The *robot* can't see the scores of any location until it travels there. It list
 
 The *teleop* allows you to send movement commands to the robot over the `move_command` topic.
 
-## Helpful resources
+## How to write a publisher, subscriber, and service
 
 The ROS tutorials provide a minimal example of how to write publishers, subscribers, and services. See [Writing a Simple Publisher and Subscriber](http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29) and [Writing a Simple Service and Client](http://wiki.ros.org/ROS/Tutorials/WritingServiceClient%28python%29).
 
 You can get more detailed information in the full rospy documentation on [publishers / subscribers](http://wiki.ros.org/rospy/Overview/Publishers%20and%20Subscribers) and [services](http://wiki.ros.org/rospy/Overview/Services)
 
-## Getting started
+## Getting started with randomwalker
 Create a catkin workspace if you don't already have one:
 
 ```
@@ -63,6 +63,8 @@ It's recommended to edit the files in this order: teleop.py, mapserver.py, robot
 4. Publish the command verbatim.
 5. Do you need to call rospy.spin()?
 
+Test your changes by opening another terminal window. In this new terminal window, don't forget to run `source catkin_ws/devel/setup.bash`. In the first terminal window, run your code with `rosrun randomwalker teleop.py`. In the second terminal window, run `rostopic echo /move_command`. If you type "up" in the first terminal window, then it should be echoed in the second.
+
 ### mapserver.py
 
 1. Make this into a node called 'map_server' (in main())
@@ -78,7 +80,16 @@ It's recommended to edit the files in this order: teleop.py, mapserver.py, robot
    and col being queried from the request object.
 8. (Optional) Check that the queried location is in bounds, and if not, raise a
    rospy.ServiceException.
-   
+
+Test your changes by opening another terminal window. In this new terminal window, don't forget to run `source catkin_ws/devel/setup.bash`. In the first terminal window, run your code with `rosrun randomwalker mapserver.py`. In the second terminal window, run `rosservice call get_bounds`. You should get:
+
+```
+num_rows: 10
+num_cols: 10
+```
+
+Now try running `rosservice call get_score 5 5`. You should get `score: 9`. If you implemented bounds checking, you can try something like `rosservice call get_score 5 11`, and you should get an error message.
+
 ### robot.py
 
 1. Make this into a node called 'robot' (in main())
@@ -88,7 +99,11 @@ It's recommended to edit the files in this order: teleop.py, mapserver.py, robot
 4. When the movement command is received, the robot will call `self._sense`,
    which calls `self._get_score`. `_get_score` makes a service call to
    'get_score'. Implement the service call.
-   
+
+Test your changes by opening two new terminal windows. In each new terminal window, don't forget to run `source catkin_ws/devel/setup.bash`. In the first terminal window, run the map server with `rosrun randomwalker mapserver.py`. In the second terminal window, run the robot with  `rosrun randomwalker robot.py`. In the third window, run the teleop with `rosrun randomwalker teleop.py`. The best setup is if you can see the teleop and robot windows at the same time.
+
+You should be able to type "up", "down", "left", or "right" in the teleop. In the robot window, you will see the robot `(R)` move around, revealing more of the map as you move to new locations. The robot's score will go up or down depending on what location you move to. And it should refuse to go off the edge.
+
 ## If you need help
 Ask someone! We are happy to help. If you are working on your own you can email HCR Lab. If you are in the lab, then just grab somebody.
 
