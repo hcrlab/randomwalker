@@ -1,0 +1,6 @@
+# Location to query
+int32 row
+int32 col
+---
+# Score of the given location.
+int32 score

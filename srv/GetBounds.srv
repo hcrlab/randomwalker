@@ -1,0 +1,5 @@
+# No input
+---
+# Response is the number of rows and columns.
+int32 num_rows
+int32 num_cols

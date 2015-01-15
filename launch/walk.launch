@@ -1,0 +1,7 @@
+<!-- You can see the robot move and type "up", "down" etc., but the output won't
+     be formatted nicely. -->
+<launch>
+  <node pkg="randomwalker" type="robot.py" name="robot" output="screen" />
+  <node pkg="randomwalker" type="mapserver.py" name="map_server" />
+  <node pkg="randomwalker" type="teleop.py" name="teleop" output="screen" />
+</launch>
