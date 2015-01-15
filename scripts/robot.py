@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 
-from randomwalker.srv import GetBounds
-from randomwalker.srv import GetScore
-from randomwalker.srv import GetScoreRequest
-from std_msgs.msg import String
 from world import World
-import rospy
 
 """
 ### Steps for this file
@@ -36,8 +31,6 @@ class Robot(object):
     def __init__(self, world):
         # TODO: Create a subscriber for the 'move_command' topic.
         # Make self._handle_move the callback.
-        self._move_sub = rospy.Subscriber('move_command', String,
-            self._handle_move)
         self._world = world
         self._row = self._world.num_rows() / 2
         self._col = self._world.num_cols() / 2
@@ -50,14 +43,7 @@ class Robot(object):
         # TODO: Be sure you're returning an integer. When you call a service,
         # the result is actually a response object. What do you need to do to
         # get the integer out?
-        rospy.wait_for_service('get_score')
-        get_score = rospy.ServiceProxy('get_score', GetScore)
-        request = GetScoreRequest(self._row, self._col)
-        # You can also write get_score(self._row, self._col). This is just
-        # showing that there are multiple ways to call a service. See the rospy
-        # documentation on services (linked above) for more info.
-        score_response = get_score(request)
-        return score_response.score
+        return None
 
     def _sense(self):
         """Senses the score for the current location.
@@ -126,20 +112,16 @@ class Robot(object):
 def get_world():
     # TODO: Call the 'get_bounds' service (defined in mapserver.py). Don't
     # for get to wait for it first.
-    rospy.wait_for_service('get_bounds')
-    get_bounds = rospy.ServiceProxy('get_bounds', GetBounds) 
-    response = get_bounds()
+
     # TODO: Fill out the constructor with the number of rows and columns
     # returned from the 'get_bounds' service.
-    return World(response.num_rows, response.num_cols)
+    return World(None, None)
 
 def main():
     # TODO: Make this program into a ROS node called 'robot' using init_node.
-    rospy.init_node('robot')
     world = get_world()
     robot = Robot(world)
     # TODO: Call rospy.spin()
-    rospy.spin()
 
 if __name__ == '__main__':
     main()
